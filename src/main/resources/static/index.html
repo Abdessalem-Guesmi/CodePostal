@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css"
+	href="bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body ng-app="mypost" ng-controller="mypostController">
+	<div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="panel panel-info spacer">
+			<div class="panel-heading">Compte</div>
+			<div class="panel-body">
+				<form>
+					<div class="form-group">
+						<label>Code_Compte</label> <input type="text"
+							ng-model="codeCompte">
+						<button ng-click="chargercompte()">Charger</button>
+					</div>
+				</form>
+			</div>
+			
+			
+		</div>
+	</div>
+	<div ng-if="compte">
+		<div class="col-md-6 col-sm-12 col-xs-12">
+			<div class="panel panel-info spacer">
+				<div class="panel-heading">Etat du Compte</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<label>Solde:</label> <label>{{compte.solde}}</label>
+					</div>
+					<div class="form-group">
+						<label>Date Création:</label> <label>{{compte.dateCreation|date
+							: format : timezone}}</label>
+					</div>
+					<div class="form-group" ng-if="compte.decouvert">
+						<label>Decouvert:</label> <label>{{compte.decouvert}}</label>
+					</div>
+					<div class="form-group" ng-if="compte.taux">
+						<label>Taux:</label> <label>{{compte.taux}}</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-info spacer">
+				<div class="panel-heading">Operation</div>
+				<div class=" panel-body"></div>
+				<form>
+					<div class="form-group">
+						<label>Versement:</label> <input type="radio"
+							ng-model="operation.type" value="versement" /> <label>Retrait:</label>
+						<input type="radio" ng-model="operation.type" value="retrait" />
+						<label>Virement:</label> <input type="radio"
+							ng-model="operation.type" value="virement" />
+					</div>
+					<div class="form-group">
+						<span> <label>Montant:</label> <input type="text"
+							ng-model="operation.montant" size="10" />
+						</span> <span ng-if="operation.type=='virement'"> <label>Compte
+								Cible:</label> <input type="text" ng-model="operation.cpt2" size="10" />
+						</span>
+					</div>
+					<button class="btn btn-primary" ng-click="valideropration()">Save</button>
+				</form>
+			</div>
+		</div>
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<div class="panel panel-info spacer">
+				<div class="panel-heading">Opérarion sur le Compte</div>
+
+				<div class="panel-body">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>NUM</th>
+								<th>Date Operation</th>
+								<th>Montant</th>
+								<th>Type_Operation</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="op in pageOperation.operation">
+								<th>{{op.numoperation}}</th>
+								<th>{{op.dateoperation| date:format:timezone}}</th>
+								<th>{{op.montant}}</th>
+								<th>{{op.type}}</th>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="container spacer">
+					<ul class="nav nav-pills">
+						<li class="clickable" ng-class="{active:$index==pagecourante}"
+							ng-repeat="p in pages track by $index"><a
+							ng-click="gotopage($index)">{{$index}}</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container error col-md-12 col-sm-12 col-xs-12" ng-if="errorMessage!=null">{{errorMessage}}</div>
+	<footer class="navbar-fixed-bottom">
+	<small>Abdou_Guesmi</small>
+	</footer>
+	<script type="text/javascript" src="angular/angular.min.js"></script>
+	<script type="text/javascript" src="js/post.js"></script>
+	<script type="text/javascript" src="js/controller/controller.js"></script>
+</body>
+</html>
